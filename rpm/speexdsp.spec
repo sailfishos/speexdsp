@@ -33,7 +33,14 @@ speech. This package contains development files for %{name}
 
 %build
 ./autogen.sh
-%configure --disable-static --enable-fixed-point
+
+%configure \
+%ifarch aarch64
+    --disable-neon \
+%endif
+    --disable-static \
+    --enable-fixed-point
+
 make %{?jobs:-j%jobs}
 
 %install
