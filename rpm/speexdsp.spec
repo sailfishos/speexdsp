@@ -2,7 +2,6 @@ Name:       speexdsp
 Summary:    Software DSP library
 Version:    1.2.0
 Release:    1
-Group:      System/Libraries
 License:    BSD
 URL:        http://www.speex.org/
 Source0:    %{name}-%{version}.tar.bz2
@@ -20,7 +19,6 @@ data (e.g. voice mail).
 
 %package devel
 Summary:    Development package for %{name}
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 
 %description devel
@@ -29,19 +27,16 @@ speech. This package contains development files for %{name}
 
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%autosetup -p1 -n %{name}-%{version}/%{name}
 
 %build
 ./autogen.sh
 
 %configure \
-%ifarch aarch64
-    --disable-neon \
-%endif
     --disable-static \
     --enable-fixed-point
 
-make %{?jobs:-j%jobs}
+%make_build
 
 %install
 rm -rf %{buildroot}
@@ -54,7 +49,7 @@ rm -f $RPM_BUILD_ROOT%{_docdir}/speexdsp/manual.pdf
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING
+%license COPYING
 %{_libdir}/libspeexdsp.so.*
 
 %files devel
